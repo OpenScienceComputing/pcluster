@@ -1,0 +1,96 @@
+Region: us-east-1
+Image:
+  Os: alinux2
+
+HeadNode:
+  InstanceType: c5.xlarge
+  Networking:
+    SubnetId: subnet-12345678
+
+Scheduling:
+  Scheduler: slurm
+  SlurmQueues:
+    - Name: hpc_spot
+      ComputeResources:
+        - Name: hpc_spot_c6i
+          InstanceType: c6i.32xlarge
+          MaxCount: 20
+          Efa:
+            Enabled: true
+      Networking:
+        PlacementGroup:
+          Enabled: true
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: SPOT
+
+    - Name: hpc_ondemand
+      ComputeResources:
+        - Name: hpc_ondemand_c6i
+          InstanceType: c6i.32xlarge
+          MaxCount: 20
+          Efa:
+            Enabled: true
+      Networking:
+        PlacementGroup:
+          Enabled: true
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: ONDEMAND
+
+    - Name: htc_spot
+      ComputeResources:
+        - Name: htc_spot_m6a
+          InstanceType: m6a.large
+          MaxCount: 100
+      Networking:
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: SPOT
+
+    - Name: htc_ondemand
+      ComputeResources:
+        - Name: htc_ondemand_m6a
+          InstanceType: m6a.large
+          MaxCount: 100
+      Networking:
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: ONDEMAND
+
+    - Name: gpu_spot
+      ComputeResources:
+        - Name: gpu_spot_p4d
+          InstanceType: p4d.24xlarge
+          MaxCount: 10
+          Efa:
+            Enabled: true
+      Networking:
+        PlacementGroup:
+          Enabled: true
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: SPOT
+
+    - Name: gpu_ondemand
+      ComputeResources:
+        - Name: gpu_ondemand_p4d
+          InstanceType: p4d.24xlarge
+          MaxCount: 10
+          Efa:
+            Enabled: true
+      Networking:
+        PlacementGroup:
+          Enabled: true
+        SubnetIds:
+          - subnet-12345678
+      CapacityType: ONDEMAND
+
+SharedStorage:
+  - MountDir: /fsx
+    Name: FSxLustre
+    StorageType: FsxLustre
+    FsxLustreSettings:
+      StorageCapacity: 10240
+      DeploymentType: PERSISTENT_1
+      PerUnitStorageThroughput: 200
